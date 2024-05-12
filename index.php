@@ -68,7 +68,7 @@ include 'function.php';
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="barang.php">Barang</a>
-                        <a class="collapse-item" href="../module/kategori/index.php">Kategori</a>
+                        <a class="collapse-item" href="kategori.php ">Kategori</a>
                     </div>
                 </div>
             </li>
@@ -83,7 +83,7 @@ include 'function.php';
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="#">Transaksi Jual</a>
+                        <a class="collapse-item" href="transaksi.php">Transaksi Jual</a>
                         <a class="collapse-item" href="#">Laporan Penjualan</a>
                     </div>
                 </div>
@@ -200,7 +200,7 @@ include 'function.php';
                                     </center>
                                 </div>
                                 <div class="card-footer">
-                                    <a href='#' class="text-dark">Cek Barang <i
+                                    <a href='barang.php' class="text-dark">Cek Barang <i
                                             class='fa fa-angle-double-right'></i></a>
                                 </div>
                             </div>

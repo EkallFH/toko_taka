@@ -15,7 +15,7 @@ include 'function.php';
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Data Barang</title>
+    <title>List Kategori</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -212,17 +212,14 @@ include 'function.php';
                 <div class="container-fluid">
                     <!-- Button -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h4 class=" mb-0 text-gray">Data Barang</h4>
+                        <h4 class=" mb-0 text-gray">Data Kategori</h4>
                     </div>
-
                     <button type="button" class="btn btn-primary btn-md mr-2" data-bs-toggle="modal"
                         data-bs-target="#myTambah">
-                        <i class="fa fa-plus"></i> Tambah Barang
+                        <i class="fa fa-plus"></i> Tambah Data
                     </button>
-                    <a href="barang.php" class="btn btn-success btn-md">
-                        <i class="fa fa-refresh"></i> Refresh Data</a>
 
-                    <!-- Tabel Barang -->
+                    <!-- Tabel Kategori -->
                     <div class="row">
                         <div class="container-fluid">
                             <div class="card shadow mb-4 mt-3">
@@ -233,61 +230,48 @@ include 'function.php';
                                             <thead>
                                                 <tr style="background:#DFF0D8;color:#333;">
                                                     <th>No.</th>
-                                                    <th>ID Barang</th>
                                                     <th>Kategori</th>
-                                                    <th>Nama Barang</th>
-                                                    <th>Merk</th>
-                                                    <th>Stok</th>
-                                                    <th>Harga Beli</th>
-                                                    <th>Harga Jual</th>
+                                                    <th>Tanggal Input</th>
                                                     <th colspan="2" class="text-center">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                     <?php
-                                                    $query = "SELECT *, kategori.nama_kategori FROM barang
-                                                    LEFT JOIN kategori ON barang.id_kategori = kategori.id_kategori";
+                                                    $query = "SELECT * FROM kategori";
                                                     $query_final = mysqli_query($connect, $query);
                                                     $no = 1;
 
                                                     while ($toko_db = mysqli_fetch_array($query_final)) {
-                                                        $id_barang = $toko_db["id_barang"];
                                                         $nama_kategori = $toko_db["nama_kategori"];
-                                                        $nama_barang = $toko_db["nama_barang"];
-                                                        $merk = $toko_db["merk"];
-                                                        $stok = $toko_db["stok"];
-                                                        $harga_beli = $toko_db["harga_beli"];
-                                                        $harga_jual = $toko_db["harga_jual"];
-                                                        $id = $toko_db["id"];
+                                                        $tgl_input = $toko_db["tgl_input"];
+                                                        $id_kategori = $toko_db["id_kategori"];
+
                                                         ?>
                                                     <tr>
                                                         <td><?= $no++ ?></td>
-                                                        <td><?= $id_barang ?></td>
                                                         <td><?= $nama_kategori ?></td>
-                                                        <td><?= $nama_barang ?></td>
-                                                        <td><?= $merk ?></td>
-                                                        <td><?= $stok ?></td>
-                                                        <td>Rp.<?=number_format($harga_beli);?></td>
-                                                        <td>Rp.<?=number_format($harga_jual);?></td>
+                                                        <td><?= $tgl_input ?></td>
                                                         <td><button type="button" class="btn btn-warning"
-                                                                data-bs-toggle="modal" data-bs-target="#myEdit<?= $id ?>">
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#myEdit<?= $id_kategori ?>">
                                                                 Edit
                                                             </button></td>
                                                         <td><button type="button" class="btn btn-danger"
-                                                                data-bs-toggle="modal" data-bs-target="#hapus<?= $id ?>">
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#hapus<?= $id_kategori ?>">
                                                                 Hapus
                                                             </button></td>
                                                     </tr>
 
                                                     <!-- EDIT -->
-                                                    <div class="modal" id="myEdit<?= $id ?>">
+                                                    <div class="modal" id="myEdit<?= $id_kategori ?>">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
 
                                                                 <!-- Modal Header -->
                                                                 <div class="modal-header">
-                                                                    <h4 class="modal-title">Edit <?= $nama_barang ?></h4>
+                                                                    <h4 class="modal-title">Edit <?= $nama_kategori ?></h4>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"></button>
                                                                 </div>
@@ -295,40 +279,15 @@ include 'function.php';
                                                                 <!-- Modal body -->
                                                                 <form method="POST">
                                                                     <div class="modal-body">
-
                                                                         <div class="mb-3">
                                                                             <label for="exampleFormControlInput1"
-                                                                                class="form-label">ID Barang</label>
+                                                                                class="form-label">Nama Kategori</label>
                                                                             <input type="text" class="form-control" id=""
-                                                                                placeholder="" name="id_barang" value="<?=$id_barang?>">
+                                                                                placeholder="" name="nama_kategori"
+                                                                                value="<?= $nama_kategori ?>">
                                                                         </div>
-                                                                        
-                                                                        <div class="mb-3">
-                                                                            <label for="exampleFormControlInput1"
-                                                                                class="form-label">Nama Barang</label>
-                                                                            <input type="text" class="form-control" id=""
-                                                                                placeholder="" name="nama_barang" value="<?=$nama_barang?>">
-                                                                        </div>
-                                                                        <div class="mb-3">
-                                                                            <label for="exampleFormControlInput1"
-                                                                                class="form-label">Merk</label>
-                                                                            <input type="text" class="form-control" id=""
-                                                                                placeholder="" name="merk" value="<?=$merk?>">
-                                                                        </div>
-                                                                        
-                                                                        <div class="mb-3">
-                                                                            <label for="exampleFormControlInput1"
-                                                                                class="form-label">Harga Beli</label>
-                                                                            <input type="number" class="form-control" id=""
-                                                                                placeholder="" name="harga_beli" value="<?=$harga_beli?>">
-                                                                        </div>
-                                                                        <div class="mb-3">
-                                                                            <label for="exampleFormControlInput1"
-                                                                                class="form-label">Harga Jual</label>
-                                                                            <input type="number" class="form-control" id=""
-                                                                                placeholder="" name="harga_jual" value="<?=$harga_jual?>">
-                                                                        </div>
-                                                                        <input type="hidden" name="id" value="<?=$id?>">
+                                                                        <input type="hidden" name="id"
+                                                                            value="<?= $id_kategori ?>">
                                                                     </div>
 
 
@@ -337,7 +296,7 @@ include 'function.php';
                                                                         <button type="button" class="btn btn-danger"
                                                                             data-bs-dismiss="modal">Tutup</button>
                                                                         <button type="submit" class="btn btn-success"
-                                                                            name="edit_barang">Kirim</button>
+                                                                            name="edit_kategori">Kirim</button>
 
                                                                     </div>
                                                                 </form>
@@ -346,13 +305,13 @@ include 'function.php';
                                                     </div>
 
                                                     <!-- HAPUS -->
-                                                    <div class="modal" id="hapus<?= $id ?>">
+                                                    <div class="modal" id="hapus<?= $id_kategori ?>">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
 
                                                                 <!-- Modal Header -->
                                                                 <div class="modal-header">
-                                                                    <h4 class="modal-title">Hapus <?= $nama_barang ?></h4>
+                                                                    <h4 class="modal-title">Hapus <?= $nama_kategori ?></h4>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"></button>
                                                                 </div>
@@ -360,30 +319,26 @@ include 'function.php';
                                                                 <!-- Modal body -->
                                                                 <form method="POST">
                                                                     <div class="modal-body">
-                                                                        Apakah Anda Yakin Akan Menghapus Barang Ini?
-                                                                    <input type="hidden" name="id" value="<?=$id;?>">
+                                                                        Apakah Anda Yakin Akan Menghapus Kategori Ini?
+                                                                        <input type="hidden" name="id"
+                                                                            value="<?= $id_kategori; ?>">
                                                                     </div>
-
 
                                                                     <!-- Modal footer -->
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-danger"
                                                                             data-bs-dismiss="modal">Tutup</button>
                                                                         <button type="submit" class="btn btn-success"
-                                                                            name="hapus_barang">Kirim</button>
-
+                                                                            name="hapus_kategori">Kirim</button>
                                                                     </div>
-
                                                                 </form>
-
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                     <?php
-                                                    };
+                                                    }
+                                                    ;
                                                     ?>
-
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -466,60 +421,28 @@ include 'function.php';
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Tambah Barang</h4>
+                <h4 class="modal-title">Tambah Kategori</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <!-- Modal body -->
             <form method="POST">
                 <div class="modal-body">
-
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">ID Barang</label>
-                        <input type="text" class="form-control" id="" placeholder="" name="id_barang">
+                        <label for="exampleFormControlInput1" class="form-label">Nama Kategori</label>
+                        <input type="text" class="form-control" id="" placeholder="" name="nama_kategori">
                     </div>
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Kategori</label>
-                        <select name="id_kategori" id="" class="form-control">
-                            <option value="">Pilih Kategori</option>
-                            <?php
-                            $kategori = "SELECT * FROM kategori";
-
-                            $query_kategori = mysqli_query($connect, $kategori);
-                            while ($kat = mysqli_fetch_array($query_kategori)) {
-                                ?>
-                                <option value="<?= $kat['id_kategori'] ?>"><?= $kat['nama_kategori'] ?></option>
-                            <?php } ?>
-                        </select>
+                        <label for="exampleFormControlInput1">Tanggal Input</label>
+                        <input type="datetime-local" class="form-control" id="" name="tgl_input">
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Nama Barang</label>
-                        <input type="text" class="form-control" id="" placeholder="" name="nama_barang">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Merk</label>
-                        <input type="text" class="form-control" id="" placeholder="" name="merk">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Stok</label>
-                        <input type="text" class="form-control" id="" placeholder="" name="stok">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Harga Beli</label>
-                        <input type="number" class="form-control" id="" placeholder="" name="harga_beli">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Harga Jual</label>
-                        <input type="number" class="form-control" id="" placeholder="" name="harga_jual">
-                    </div>
-
                 </div>
 
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-success" name="tambah_barang">Kirim</button>
+                    <button type="submit" class="btn btn-success" name="tambah_kategori">Kirim</button>
 
                 </div>
             </form>

@@ -1,5 +1,9 @@
 <?php
 include 'function.php';
+
+$barang = mysqli_query($connect, "SELECT * FROM barang");
+$arrayHarga = "var harga_jual = new Array();";
+$arrayNama = "var nama_barang = new Array();";
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +17,7 @@ include 'function.php';
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Data Barang</title>
+    <title>Taka Toko</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -38,7 +42,7 @@ include 'function.php';
         <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class='bx bxl-ok-ru'></i>
                 </div>
@@ -50,7 +54,7 @@ include 'function.php';
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -67,8 +71,8 @@ include 'function.php';
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="../barang/index.php">Barang</a>
-                        <a class="collapse-item" href="#">Kategori</a>
+                        <a class="collapse-item" href="barang.php">Barang</a>
+                        <a class="collapse-item" href="kategori.php ">Kategori</a>
                     </div>
                 </div>
             </li>
@@ -112,7 +116,8 @@ include 'function.php';
                     </button>
 
                     <!-- Topbar Search -->
-                    <h2 class=" ml-2 mb-0 text-black-600">Halo Admin</h2>
+
+                    <h2 class=" ml-2 mb-0 text-black-600"> Hello </h2>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -184,11 +189,101 @@ include 'function.php';
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Transaksi Penjualan</h1>
                     </div>
-                    <!-- Status Card -->
+                    <!-- Tabel Transaksi -->
                     <div class="row">
-                        
+                        <div class="container-fluid">
+                            <div class="card shadow mb-4 mt-3">
+                                <div class="card-body">
+                                    <form method="POST">
+                                        <div class="form-group row mb-0">
+                                            <label class="col-sm-4 col-form-label col-form-label-sm"><b>Tgl.
+                                                    Transaksi</b></label>
+                                            <div class="col-sm-8 mb-2">
+                                                <input type="text" class="form-control form-control-sm"
+                                                    name="tanggal_input" value="<?php echo date("j F Y H:i"); ?>"
+                                                    readonly>
+                                            </div>
+                                            <label class="col-sm-4 col-form-label col-form-label-sm"><b>Kode
+                                                    Barang</b></label>
+                                            <div class="col-sm-8 mb-2">
+                                                <div class="input-group">
+                                                    <input type="text" name="kode_barang"
+                                                        class="form-control form-control-sm" list="datalist1"
+                                                        onchange="changeValue(this.value)"
+                                                        aria-describedby="basic-addon2" required>
+                                                    <datalist id="datalist1">
+                                                        <?php if (mysqli_num_rows($barang)) { ?>
+                                                            <?php while ($row_brg = mysqli_fetch_array($barang)) { ?>
+                                                                <option value="<?php echo $row_brg["id_barang"] ?>">
+                                                                    <?php echo $row_brg["id_barang"] ?>
+                                                                    <?php $arrayHarga .= "harga_jual['" . $row_brg['id_barang'] . "'] = {harga_jual:'" . addslashes($row_brg['harga_jual']) . "'};";
+                                                                    $arrayNama .= "nama_barang['" . $row_brg['id_barang'] . "'] = {nama_barang:'" . addslashes($row_brg['nama_barang']) . "'};";
+                                                            } ?>
+                                                            <?php } ?>
+                                                    </datalist>
+
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-4 col-form-label col-form-label-sm"><b>Nama
+                                                    Barang</b></label>
+                                            <div class="col-sm-8 mb-2">
+                                                <input type="text" class="form-control form-control-sm"
+                                                    name="nama_barang" id="nama_barang" readonly>
+                                            </div>
+                                            <label
+                                                class="col-sm-4 col-form-label col-form-label-sm"><b>Harga</b></label>
+                                            <div class="col-sm-8 mb-2">
+                                                <input type="number" class="form-control form-control-sm"
+                                                    id="harga_jual" onchange="total()" name="harga_jual" readonly>
+                                            </div>
+                                            <label
+                                                class="col-sm-4 col-form-label col-form-label-sm"><b>Jumlah</b></label>
+                                            <div class="col-sm-8 mb-2">
+                                                <input type="number" class="form-control form-control-sm" id="jumlah"
+                                                    onchange="total()" name="jumlah" placeholder="0" required>
+                                            </div>
+                                            <label
+                                                class="col-sm-4 col-form-label col-form-label-sm"><b>Sub-Total</b></label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        id="subtotal" name="subtotal" onchange="total()"
+                                                        name="sub_total" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <hr>
+                                    <form method="POST">
+                                        <div class="form-group row mb-0">
+                                            <input type="hidden" class="form-control" name="no_transaksi"
+                                                value="<?php echo $kodeCart; ?>" readonly>
+                                            <input type="hidden" class="form-control" value="<?php echo $tot_bayar; ?>"
+                                                id="hargatotal" readonly>
+                                            <label
+                                                class="col-sm-4 col-form-label col-form-label-sm"><b>Bayar</b></label>
+                                            <div class="col-sm-8 mb-2">
+                                                <input type="number" class="form-control form-control-sm" name="bayar"
+                                                    id="bayarnya" onchange="totalnya()">
+                                            </div>
+                                            <label
+                                                class="col-sm-4 col-form-label col-form-label-sm"><b>Kembali</b></label>
+                                            <div class="col-sm-8 mb-2">
+                                                <input type="number" class="form-control form-control-sm"
+                                                    name="kembalian" id="total1" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <button class="btn btn-purple btn-sm" name="save1" value="simpan"
+                                                type="submit">
+                                                <i class="fa fa-shopping-cart mr-2"></i>Bayar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -225,7 +320,7 @@ include 'function.php';
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">x</span>
+                        <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
@@ -255,6 +350,37 @@ include 'function.php';
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
 
+
+    <script type="text/javascript">
+        <?php echo $arrayHarga; ?>
+        <?php echo $arrayNama; ?>
+        function changeValue(id_barang) {
+            document.getElementById("nama_barang").value = nama_barang[id_barang].nama_barang;
+            document.getElementById("harga_jual").value = harga_jual[id_barang].harga_jual;
+        };
+
+        function total() {
+            var harga = parseInt(document.getElementById('harga_barang').value);
+            var jumlah_beli = parseInt(document.getElementById('quantity').value);
+            var jumlah_harga = harga * jumlah_beli;
+            document.getElementById('subtotal').value = jumlah_harga;
+        }
+
+        function totalnya() {
+            var harga = parseInt(document.getElementById('hargatotal').value);
+            var pembayaran = parseInt(document.getElementById('bayarnya').value);
+            var kembali = pembayaran - harga;
+            document.getElementById('total1').value = kembali;
+        }
+
+        function printContent(print) {
+            var restorepage = document.body.innerHTML;
+            var printcontent = document.getElementById(print).innerHTML;
+            document.body.innerHTML = printcontent;
+            window.print();
+            document.body.innerHTML = restorepage;
+        }
+    </script>
 </body>
 
 </html>

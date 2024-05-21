@@ -352,33 +352,33 @@ $arrayNama = "var nama_barang = new Array();";
 
 
     <script type="text/javascript">
-        <?php echo $arrayHarga; ?>
-        <?php echo $arrayNama; ?>
-        function changeValue(id_barang) {
-            document.getElementById("nama_barang").value = nama_barang[id_barang].nama_barang;
-            document.getElementById("harga_jual").value = harga_jual[id_barang].harga_jual;
-        };
+         var harga_jual = {};
+        var nama_barang = {};
+        <?php
+        // Echo the PHP arrays to JavaScript
+        echo $arrayHarga;
+        echo $arrayNama;
+        ?>
+
+        function changeValue(id) {
+            document.getElementById('nama_barang').value = nama_barang[id].nama_barang;
+            document.getElementById('harga_jual').value = harga_jual[id].harga_jual;
+            total();
+        }
 
         function total() {
-            var harga = parseInt(document.getElementById('harga_barang').value);
-            var jumlah_beli = parseInt(document.getElementById('quantity').value);
-            var jumlah_harga = harga * jumlah_beli;
-            document.getElementById('subtotal').value = jumlah_harga;
+            var harga = parseFloat(document.getElementById('harga_jual').value) || 0;
+            var jumlah = parseFloat(document.getElementById('jumlah').value) || 0;
+            var subtotal = harga * jumlah;
+            document.getElementById('subtotal').value = subtotal.toFixed(2);
+            totalnya();
         }
 
         function totalnya() {
-            var harga = parseInt(document.getElementById('hargatotal').value);
-            var pembayaran = parseInt(document.getElementById('bayarnya').value);
-            var kembali = pembayaran - harga;
-            document.getElementById('total1').value = kembali;
-        }
-
-        function printContent(print) {
-            var restorepage = document.body.innerHTML;
-            var printcontent = document.getElementById(print).innerHTML;
-            document.body.innerHTML = printcontent;
-            window.print();
-            document.body.innerHTML = restorepage;
+            var subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+            var bayar = parseFloat(document.getElementById('bayarnya').value) || 0;
+            var kembali = bayar - subtotal;
+            document.getElementById('total1').value = kembali.toFixed(2);
         }
     </script>
 </body>
